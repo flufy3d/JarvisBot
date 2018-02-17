@@ -1,0 +1,11 @@
+bitstamp_client_id = "1234"
+bitstamp_api_key = "xxxx"
+bitstamp_api_secret = "xxx"
+
+coinex_api_id="xxx"
+coinex_api_key="xxx"
+
+
+telegram_chatid = '1234'
+telegram_token = '1234:xxxx'
+telegram_rmsc = 3 #telegram_repeat_message_send_count
