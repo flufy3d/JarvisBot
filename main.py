@@ -1,6 +1,9 @@
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
 import logging
 import config
+import os
+import plugin
 
 
 # Enable logging
@@ -9,6 +12,12 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 logger = logging.getLogger(__name__)
 
+if not os.path.exists('tmp'):
+    os.makedirs('tmp')
+fh = logging.FileHandler('./tmp/log.txt')
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+fh.setFormatter(formatter)
+logging.getLogger('').addHandler(fh)
 
 # Define a few command handlers. These usually take the two arguments bot and
 # update. Error handlers also receive the raised TelegramError object in error.
@@ -21,8 +30,45 @@ def check_authority(update):
 
 def start(bot, update):
     if not check_authority(update): return
+    update.message.reply_text('Welcome my Master!')
+
+
+def help(bot, update):
     update.message.reply_text('Hi! Use /set <seconds> to set a timer')
 
+def balance(bot, update):
+    keyboard = [[InlineKeyboardButton("Bitmex", callback_data='bitmex.balance'),
+                InlineKeyboardButton("Coinex", callback_data='coinex.balance')],
+                [InlineKeyboardButton("Okex", callback_data='okex.balance'),
+                InlineKeyboardButton("Bitstamp", callback_data='bitstamp.balance')]]
+
+    reply_markup = InlineKeyboardMarkup(keyboard)
+
+    update.message.reply_text('Please choose:', reply_markup=reply_markup)
+
+def ticker(bot, update):
+    keyboard = [[InlineKeyboardButton("Bitmex", callback_data='bitmex.ticker'),
+                InlineKeyboardButton("Coinex", callback_data='coinex.ticker')],
+                [InlineKeyboardButton("Okex", callback_data='okex.ticker'),
+                InlineKeyboardButton("Bitstamp", callback_data='bitstamp.ticker')]]
+
+    reply_markup = InlineKeyboardMarkup(keyboard)
+
+    update.message.reply_text('Please choose:', reply_markup=reply_markup)
+
+def callback_query(bot, update):
+    query = update.callback_query
+    response = ''
+    try:
+        cmd = "plugin.%s()" % (query.data)
+        response = eval(cmd)
+    except Exception as e:
+        response = 'exec %s failed!' % (query.data)
+    
+
+    bot.edit_message_text(text=response,
+                          chat_id=query.message.chat_id,
+                          message_id=query.message.message_id)
 
 def alarm(bot, job):
     """Send the alarm message."""
@@ -82,12 +128,20 @@ def main():
     dp = updater.dispatcher
     # on different commands - answer in Telegram
     dp.add_handler(CommandHandler("start", start))
-    dp.add_handler(CommandHandler("help", start))
+
+    dp.add_handler(CommandHandler("help", help))
+
+    dp.add_handler(CommandHandler("balance", balance))
+
+    dp.add_handler(CommandHandler("ticker", ticker))
+
     dp.add_handler(CommandHandler("set", set_timer,
                                   pass_args=True,
                                   pass_job_queue=True,
                                   pass_chat_data=True))
     dp.add_handler(CommandHandler("unset", unset, pass_chat_data=True))
+
+    dp.add_handler(CallbackQueryHandler(callback_query))
 
     dp.add_handler(MessageHandler(Filters.text | Filters.command, echo))
 
@@ -105,5 +159,9 @@ def main():
 
 
 if __name__ == '__main__':
-    print('start jarvis.')
-    main()
+    try:
+        main()
+    except Exception as e:
+        s=traceback.format_exc()
+        logging.info(e)
+        logging.error(s)
