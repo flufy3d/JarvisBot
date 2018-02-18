@@ -48,13 +48,13 @@ def ticker():
     #ret = client.Quote.Quote_get(symbol='XBTUSD',count=1,reverse=True).result()
     #print(ret)
     data = client.Instrument.Instrument_get(symbol='XBTUSD').result()
-    ret += 'xbtusd: %.2f\n' % (float(data[0][0]['lastPrice']))
-    ret += 'rate: %.4f%%\n' % (float(data[0][0]['fundingRate'])*100.0)
-    ret += 'irate: %.4f%%\n' % (float(data[0][0]['indicativeFundingRate'])*100.0)
+    ret += '    xbtusd: %.2f\n' % (float(data[0][0]['lastPrice']))
+    ret += '    rate: %.4f%%\n' % (float(data[0][0]['fundingRate'])*100.0)
+    ret += '    irate: %.4f%%\n' % (float(data[0][0]['indicativeFundingRate'])*100.0)
     _fundingTimestamp = data[0][0]['fundingTimestamp']
     _timestamp = data[0][0]['timestamp']
     rest_time = str(_fundingTimestamp - _timestamp).split('.', 2)[0]
-    ret += 'countdown: %s' % (rest_time)
+    ret += '    countdown: %s' % (rest_time)
 
     return ret
 

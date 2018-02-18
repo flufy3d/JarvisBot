@@ -100,5 +100,4 @@ ENV/
 
 #JarvisBot
 config.py
-tmp/*.txt
-
+tmp/log.txt

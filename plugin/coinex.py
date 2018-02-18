@@ -52,12 +52,19 @@ def balance():
     response = request_client.request('GET', 'https://api.coinex.com/v1/balance/')
  
     data = complex_json.loads(response.text)
-    for i in data['data']:
-        _available = float(data['data'][i]['available'])
-        if _available != 0:
-            _str = '%s %.4f\n' % (i.lower(),_available)
-            ret += _str
-        
+
+    _symbol = 'BCH'
+    _a = float(data['data'][_symbol]['available'])
+    _t = _a + float(data['data'][_symbol]['frozen'])
+    _str = '%s(a/t): %.4f %.4f\n' % (_symbol.lower(),_a,_t)
+    ret += _str
+
+    _symbol = 'BTC'
+    _a = float(data['data'][_symbol]['available'])
+    _t = _a + float(data['data'][_symbol]['frozen'])
+    _str = '%s(a/t): %.4f %.4f\n' % (_symbol.lower(),_a,_t)
+    ret += _str
+
     return ret
 
 def ticker():
@@ -77,8 +84,8 @@ def ticker():
     cet_price = float(data['data']['ticker']['last'])
 
 
-    ret += 'bchbtc: %.4f\n' % (bch_price)
-    ret += 'cetbch: %.8f\n' % (cet_price)
+    ret += '    bchbtc: %.4f\n' % (bch_price)
+    ret += '    cetbch: %.8f\n' % (cet_price)
 
     return ret
 

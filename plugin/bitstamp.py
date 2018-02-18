@@ -94,16 +94,15 @@ def balance():
     ret = 'Bitstamp Balance:\n'
     _exchange = PrivateBitstamp()
     data  = _exchange.get_info()
-    for i in data:
-        if '_available' in i:
-            _available = float(data[i])
-            if _available != 0:
-                _str = '%s %.4f\n' % (i.replace('_available', ''),_available)
-                ret += _str
+
+    _str = '%s(a/t): %.4f %.4f\n' % ('bch',float(data['bch_available']),float(data['bch_balance']))
+    ret += _str
+    _str = '%s(a/t): %.4f %.4f\n' % ('btc',float(data['btc_available']),float(data['btc_balance']))
+    ret += _str
     return ret
 
 def ticker():
-    ret = 'Coinex Ticker:\n'
+    ret = 'Bitstamp Ticker:\n'
     _exchange = PrivateBitstamp()
     data = _exchange.get_ticker('btcusd')
     btcusd_price = float(data['last'])
@@ -113,9 +112,9 @@ def ticker():
 
     data = _exchange.get_ticker('eurusd')
     eurusd_price = float(data['last'])
-    ret += 'btcusd: %.2f\n' % (btcusd_price)
-    ret += 'bchbtc: %.4f\n' % (bchbtc_price)
-    ret += 'eurusd: %.4f\n' % (eurusd_price)
+    ret += '    btcusd: %.2f\n' % (btcusd_price)
+    ret += '    bchbtc: %.4f\n' % (bchbtc_price)
+    ret += '    eurusd: %.4f\n' % (eurusd_price)
 
     return ret
 

@@ -40,7 +40,8 @@ def balance(bot, update):
     keyboard = [[InlineKeyboardButton("Bitmex", callback_data='bitmex.balance'),
                 InlineKeyboardButton("Coinex", callback_data='coinex.balance')],
                 [InlineKeyboardButton("Okex", callback_data='okex.balance'),
-                InlineKeyboardButton("Bitstamp", callback_data='bitstamp.balance')]]
+                InlineKeyboardButton("Bitstamp", callback_data='bitstamp.balance')],
+                [InlineKeyboardButton("Combine", callback_data='combine.balance')]]
 
     reply_markup = InlineKeyboardMarkup(keyboard)
 
@@ -50,7 +51,8 @@ def ticker(bot, update):
     keyboard = [[InlineKeyboardButton("Bitmex", callback_data='bitmex.ticker'),
                 InlineKeyboardButton("Coinex", callback_data='coinex.ticker')],
                 [InlineKeyboardButton("Okex", callback_data='okex.ticker'),
-                InlineKeyboardButton("Bitstamp", callback_data='bitstamp.ticker')]]
+                InlineKeyboardButton("Bitstamp", callback_data='bitstamp.ticker')],
+                [InlineKeyboardButton("Combine", callback_data='combine.ticker')]]
 
     reply_markup = InlineKeyboardMarkup(keyboard)
 
