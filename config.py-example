@@ -5,6 +5,8 @@ bitstamp_api_secret = "xxx"
 coinex_api_id="xxx"
 coinex_api_key="xxx"
 
+bitmex_api_id = "xx"
+bitmex_api_secret = "4_xx-xx-xx"
 
 telegram_chatid = '1234'
 telegram_token = '1234:xxxx'

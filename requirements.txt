@@ -1,2 +1,5 @@
 nose
+requests
+websocket-client
+bravado
 python-telegram-bot

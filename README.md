@@ -14,3 +14,8 @@ You need Python3 to run this program,add install requirements
 # Run
 
     py main.py
+
+
+# Plugin Test
+
+    py -m nose .\plugin\coinex.py -s
