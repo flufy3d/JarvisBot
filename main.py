@@ -25,7 +25,7 @@ def check_authority(update):
     if update.message.chat.id == config.telegram_chatid:
         return True
     else:
-        update.message.reply_text('sorry, you are not my master.')
+        #update.message.reply_text('sorry, you are not my master.')
         return False
 
 def start(bot, update):
