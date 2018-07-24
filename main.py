@@ -118,9 +118,20 @@ def error(bot, update, error):
 
 def echo(bot, update):
     """Echo the user message."""
+    print(update.message)
     if not check_authority(update): return
     update.message.reply_text(update.message.text)
 
+def callback_func(bot, update):
+
+    try:
+        bot.delete_message(update.message.chat_id, update.message.message_id)
+        logging.info('delete group join or left message: %d ' % update.message.message_id)
+    except Exception as ex:
+        if 'message to delete not found' in str(ex):
+            logging.error('Failed to delete join message: %s' % ex)
+        else:
+            raise
 
 def main():
     """Run bot."""
@@ -146,6 +157,8 @@ def main():
     dp.add_handler(CallbackQueryHandler(callback_query))
 
     dp.add_handler(MessageHandler(Filters.text | Filters.command, echo))
+
+    dp.add_handler(MessageHandler(Filters.status_update.new_chat_members | Filters.status_update.left_chat_member, callback_func))
 
 
     # log all errors
