@@ -118,7 +118,6 @@ def error(bot, update, error):
 
 def echo(bot, update):
     """Echo the user message."""
-    print(update.message)
     if not check_authority(update): return
     update.message.reply_text(update.message.text)
 
