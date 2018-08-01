@@ -37,6 +37,7 @@ def help(bot, update):
     update.message.reply_text('Hi! Use /set <seconds> to set a timer')
 
 def balance(bot, update):
+    if not check_authority(update): return
     keyboard = [[InlineKeyboardButton("Bitmex", callback_data='bitmex.balance'),
                 InlineKeyboardButton("Coinex", callback_data='coinex.balance')],
                 [InlineKeyboardButton("Okex", callback_data='okex.balance'),
@@ -48,6 +49,7 @@ def balance(bot, update):
     update.message.reply_text('Please choose:', reply_markup=reply_markup)
 
 def ticker(bot, update):
+    if not check_authority(update): return
     keyboard = [[InlineKeyboardButton("Bitmex", callback_data='bitmex.ticker'),
                 InlineKeyboardButton("Coinex", callback_data='coinex.ticker')],
                 [InlineKeyboardButton("Okex", callback_data='okex.ticker'),
